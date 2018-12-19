@@ -36,6 +36,7 @@
 							<option value="Outside">Outside</option>
 							<option value="International">International</option>
 						</select>
+						<input type="text" name="searchTer" placeholder="Search Terms" size="14"/>
 					</div>
 					<div>
 						<input type="text" name="image" placeholder="upload image" size="30"/>
@@ -66,11 +67,12 @@
 			$email = $_POST['email'];
 			$slsid = $_POST['slsid'];
 			$territory = $_POST['territory'];
+			$searchTer = $_POST['searchTer'];
 			$team = $_POST['team'];
 			$image = $_POST['image'];
 			
-			$insert = "insert into salesteam (firstName, lastName, phone, ext, email, slsid, territory, team, image) values ('$firstName', '$lastName', '$phone', '$ext', '$email', '$slsid', '$territory', '$team', '$image')";
- 			//echo $insert = "insert into salesteam (firstName, lastName, phone, ext, email, slsid, territory, team, image) values ('$firstName', '$lastName', '$phone', '$ext', '$email', '$slsid', '$territory', '$team', '$image')";
+			$insert = "insert into salesteam (firstName, lastName, phone, ext, email, slsid, territory, searchTer, team, image) values ('$firstName', '$lastName', '$phone', '$ext', '$email', '$slsid', '$territory', '$searchTer', '$team', '$image')";
+ 			//echo $insert = "insert into salesteam (firstName, lastName, phone, ext, email, slsid, territory, searchTer, team, image) values ('$firstName', '$lastName', '$phone', '$ext', '$email', '$slsid', '$territory', '$searchTer', '$team', '$image')";
 
 			$run = mysqli_query($conn,$insert);
 			
@@ -80,61 +82,61 @@
 		}
 		?>
 		
-		<div style="padding: 15px 0">
-		<table cellpadding="0" cellspacing="0" border="1">
-			<tr>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">#</th>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">First Name</th>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">Last Name</th>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">Phone</th>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">Ext</th>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">Email</th>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">SLS Id</th>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">Territory</th>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">Team</th>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">Image URL</th>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">Edit</th>
-				<th bgcolor="#cccccc" style="padding: 5px 10px;">Delete</th>
-			</tr>
-			<?php
+		<div style="padding: 15px 0;">
+			<div style="margin: auto;">
+				<?php
 
-			$select = "select * from salesteam order by lastName";
-			$queryRun = mysqli_query($conn,$select);
+				$select = "select * from salesteam order by lastName";
+				$queryRun = mysqli_query($conn,$select);
 			
-			$i = 0;
-			while($row = mysqli_fetch_array($queryRun)) {
+				$i = 0;
+				while($row = mysqli_fetch_array($queryRun)) {
 
-			$user_id = $row['id'];
-			$user_firstName = $row['firstName'];
-			$user_lastName = $row['lastName'];
-			$user_phone = $row['phone'];
-			$user_ext = $row['ext'];
-			$user_email = $row['email'];
-			$user_slsid = $row['slsid'];
-			$user_territory = $row['territory'];
-			$user_team = $row['team'];
-			$user_image = $row['image'];
+				$user_id = $row['id'];
+				$user_firstName = $row['firstName'];
+				$user_lastName = $row['lastName'];
+				$user_phone = $row['phone'];
+				$user_ext = $row['ext'];
+				$user_email = $row['email'];
+				$user_slsid = $row['slsid'];
+				$user_territory = $row['territory'];
+				$user_searchTer = $row['searchTer'];
+				$user_team = $row['team'];
+				$user_image = $row['image'];
 			
-			$i++;
+				$i++;
 
-			?>
-			<tr align="center">
-				<td style="padding: 3px 10px; text-align: left;"><?php echo $i;?></td>
-				<td style="padding: 3px 10px; text-align: left;"><?php echo $user_firstName;?></td>
-				<td style="padding: 3px 10px; text-align: left;"><?php echo $user_lastName;?></td>
-				<td style="padding: 3px 10px; text-align: left;"><?php echo $user_phone;?></td>
-				<td style="padding: 3px 10px; text-align: left;"><?php echo $user_ext;?></td>
-				<td style="padding: 3px 10px; text-align: left;"><?php echo $user_email;?></td>
-				<td style="padding: 3px 10px; text-align: left;"><?php echo $user_slsid;?></td>
-				<td style="padding: 3px 10px; text-align: left;"><?php echo $user_territory;?></td>
-				<td style="padding: 3px 10px; text-align: left;"><?php echo $user_team;?></td>
-				<td style="padding: 3px 10px; text-align: left;"><?php echo $user_image;?></td>
-				<td style="padding: 3px 10px; text-align: center;"><a href="salesTeam.php?edit=<?php echo $user_id; ?>">Edit</a></td>
-				<td style="padding: 3px 10px; text-align: center;"><a href="salesTeam.php?delete=<?php echo $user_id; ?>">Delete</a></td>
-			</tr>
+				?>
+
+				<div style="border: 1px solid #000000; margin: 15px; text-align: left; width: 450px; display: inline-block; overflow: auto;">
+
+						<div style="float: left; display: inline-block;">
+							<div style="padding: 10px 10px 0; text-align: left;"><img src="images/<?php echo $user_image;?>" width="auto" height="100" border="1" style="border: 1pt solid;" /></div>
+							<div style="padding: 3px 10px; text-align: left;"><?php echo $user_team;?> Sales</div>
+							<div style="padding: 3px 10px; text-align: left;">SLS id: <?php echo $user_slsid;?></div>
+						</div>
+						<div style="display: inline-block;">
+							<div style="padding: 3px 10px; text-align: left;">Name: <?php echo $user_firstName;?> <?php echo $user_lastName;?></div>
+							<div style="padding: 3px 10px; text-align: left;">Phone: <?php echo $user_phone;
+								if (empty($user_ext)) {
+									echo '</div>';
+									} else {
+									echo '&nbsp;&nbsp;ext:' . $user_ext . '</div>';
+									} ?>
+							<div style="padding: 3px 10px; text-align: left;">Email: <?php echo $user_email;?></div>
+							<div style="padding: 3px 10px; text-align: left;">Territory: <?php echo $user_territory;?></div>
+							<div style="padding: 3px 10px; text-align: left; max-width: 300px; height: 35px;">Search terms: <?php echo $user_searchTer;?></div>
+							<div style="display: block; padding: 3px 10px; text-align: center;">
+								<div style="display: inline-block; width: 50%;"><a href="salesTeam.php?edit=<?php echo $user_id; ?>">Edit</a></div>
+								<div style="float: right; display: inline-block; width: 50%;"><a href="salesTeam.php?delete=<?php echo $user_id; ?>">Delete</a></div>
+							</div>
+						</div>
+
+				</div>
+
 			<?php } ?>
 
-		</table>
+			</div>
 		</div>
 		
 		<?php

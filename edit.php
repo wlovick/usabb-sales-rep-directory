@@ -27,6 +27,7 @@
 		$user_email = $row['email'];
 		$user_slsid = $row['slsid'];
 		$user_territory = $row['territory'];
+		$user_searchTer = $row['searchTer'];
 		$user_team = $row['team'];
 		$user_image = $row['image'];
 	}
@@ -59,7 +60,8 @@
 					<option <?php if ($user_team == "Inside" ) echo 'selected' ; ?> value="Inside" >Inside</option>
 					<option <?php if ($user_team == "Outside" ) echo 'selected' ; ?> value="Outside" >Outside</option>
 					<option <?php if ($user_team == "International" ) echo 'selected' ; ?> value="International"  >International</option>
-				</select><br/>
+				</select>
+				<input type="text" name="u_searchTer" value="<?php echo $user_searchTer;?>" size="14"/>
 			</div>
 			<div>
 				<input type="text" name="u_image" value="<?php echo $user_image;?>" size="30"/>
@@ -81,16 +83,17 @@ if(isset($_POST['update'])) {
 	$update_email = $_POST['u_email'];
 	$update_slsid = $_POST['u_slsid'];
 	$update_territory = $_POST['u_territory'];
+	$update_searchTer = $_POST['u_searchTer'];
 	$update_team = $_POST['u_team'];
 	$update_image = $_POST['u_image'];
 
-	$update = "update salesteam set firstName='$update_firstName', lastName='$update_lastName', phone='$update_phone', ext='$update_ext', email='$update_email', slsid='$update_slsid', territory='$update_territory', team='$update_team', image='$update_image' where id='$edit_id'";
-// 	echo $update = "update salesteam set firstName='$update_firstName', lastName='$update_lastName', phone='$update_phone', ext='$update_ext', email='$update_email', slsid='$update_slsid', territory='$update_territory', team='$update_team', image='$update_image' where id='$edit_id'";
+	$update = "update salesteam set firstName='$update_firstName', lastName='$update_lastName', phone='$update_phone', ext='$update_ext', email='$update_email', slsid='$update_slsid', territory='$update_territory', searchTer='$update_searchTer', team='$update_team', image='$update_image' where id='$edit_id'";
+// 	echo $update = "update salesteam set firstName='$update_firstName', lastName='$update_lastName', phone='$update_phone', ext='$update_ext', email='$update_email', slsid='$update_slsid', territory='$update_territory', searchTer='$update_searchTer', team='$update_team', image='$update_image' where id='$edit_id'";
 
 	$update_run = mysqli_query($conn,$update);
 	
 	if($update_run) {
-		echo "<script>alert('Team member has been updated!')</script>";
+// 		echo "<script>alert('Team member has been updated!')</script>";
 		echo "<script>window.open('salesTeam.php', '_self')</script>";
 	}
 }

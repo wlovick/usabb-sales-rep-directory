@@ -47,11 +47,11 @@
 	.bodytext {
 		font-size: 9pt; line-height: 10pt; font-weight: bold; color: #000000; font-family: Verdana, Arial, Helvetica, sans-serif; margin: 0; padding: 0;
 	}
-	.state {fill: #226AB3; transition: .25s;}
-	.state path { stroke: #FFFFFF; stroke-width: 0.5; stroke-linejoin: round;}
-	.text {fill: #E9F1F7; font-family: 'Arial-BoldMT'; font-size: 4px;}
+	.state {fill: #e9e9e9; transition: .25s;}
+	.state path { stroke: #f2f2f2; stroke-width: 0.5; stroke-linejoin: round;}
+	.text {fill: #ddd; font-family: 'Arial-BoldMT'; font-size: 4px;}
 	
-	.state:hover {fill: #bd1d49 !important; cursor: pointer; transition: .25s;}
+/* 	.state:hover {fill: #bd1d49 !important; cursor: pointer; transition: .25s;} */
 	.selected {fill: #bd1d49; transition: .25s;}
 
 </style>
@@ -59,54 +59,108 @@
 </head>
 <body>
 
-<div class="container-fluid" style="padding: 15px 0;">
-	<div style="width: 60%; display: inline-block; vertical-align: top;">
+<div style="width: 99%; max-width: 99%; text-align: center;">
+	<div class="container-fluid" style="padding: 25px 0; z-index: 1000;">
+		<div style="">
 <!-- Header Text -->
-		<div class="row">
-			 <div class="col-12">
-				<div style="font-size: 18pt; line-height: 20pt; font-weight: bold; color: #226ab3; font-family: Verdana, Arial, Helvetica, sans-serif;"><a href="index.php" style="text-decoration: none;">USABlueBook Sales Rep Directory</a></div>
-			</div>
-		</div>
-		<div class="row">
-			 <div class="col-12">
-				<div style="font-size: 12pt; line-height: 14pt; color: #000000; font-family: Verdana, Arial, Helvetica, sans-serif;"></div>
-			</div>
-		</div>
-<!-- Search bar -->
-		<form  method="post" action="index.php?go" id="searchform"> 
-			<div class="row" style="padding: 25px;">
-				<div class="col-3"></div>
-				<div class="col-6">
-					<div class="input-group">
-						<div class="input-group-prepend">
-							<select class="custom-select" name="searchArea" id="inputGroupSelect01">
-								<option value="territory">Territory</option>
-								<option value="firstName">First Name</option>
-								<option value="lastName">Last Name</option>
-							</select>
-						</div>
-						<input type="text" name="name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"">
-						<div class="input-group-append">
-							<input type="submit" name="search" value="Search" class="btn btn-secondary" id="button-addon2">
-						</div>
-					</div>
+			<div class="row">
+				 <div class="col-12">
+					<div style="font-size: 22pt; line-height: 24pt; font-weight: bold; color: #226ab3; font-family: Verdana, Arial, Helvetica, sans-serif;"><a href="index.php" style="text-decoration: none;">USABlueBook Sales Representatives Directory</a></div>
 				</div>
-				<div class="col-3"></div>
 			</div>
-		</form> 
+<!-- Search bar -->
+			<div>
+				<form  method="post" action="index.php?go" id="searchform"> 
+					<div class="row" style="padding: 25px;">
+						<div class="col-3"></div>
+						<div class="col-6">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<select class="custom-select" name="searchArea" id="inputGroupSelect01">
+										<option value="searchTer">Territory</option>
+										<option value="firstName">First Name</option>
+										<option value="lastName">Last Name</option>
+									</select>
+								</div>
+								<input type="text" name="name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"">
+								<div class="input-group-append">
+									<input type="submit" name="search" value="Search" class="btn btn-secondary" id="button-addon2">
+								</div>
+							</div>
+						</div>
+						<div class="col-3"></div>
+					</div>
+				</form>
+			</div>
 
+<!-- Search results -->
+		<div style="display: inline-block;" name="searchResults" id="searchResults">
+
+			<?php
+				if(isset($_GET['go'])) {
+					$name = $_POST['name'];
+					$searchArea = $_POST['searchArea'];
+					//-query  the database table
+					$sql = "SELECT * FROM salesteam WHERE " . $searchArea . " like '%" . $name . "%' ORDER BY lastName";
+					//echo $sql;
+					//-run  the query against the mysql query function
+					$result = mysqli_query($conn,$sql);
+
+					echo '<div id="gallery">';
+					if ($result != 0 && mysqli_num_rows($result)) {
+					// results
+					//-create  while loop and loop through result set 
+						while($row = mysqli_fetch_array($result)){ 
+							$user_id = $row['id'];
+							$user_firstName = $row['firstName'];
+							$user_lastName = $row['lastName'];
+							$user_phone = $row['phone'];
+							$user_ext = $row['ext'];
+							$user_email = $row['email'];
+							$user_slsid = $row['slsid'];
+							$user_territory = $row['territory'];
+							$user_team = $row['team'];
+							$user_image = $row['image'];
+							//-display the result of the array
+								echo '<div class="video">';
+									echo '<div align="center" style="width: 200px; height: 200px;"><img src="images/' . $user_image . '" width="auto" height="200" border="1" style="border: 1pt solid;" /></div>';
+									echo '<div align="center" style="padding-top: 5px;"><span class="nametext">' . $user_firstName . ' ' . $user_lastName . '</span></div>';
+									echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_phone . '&nbsp;';
+									if (empty($user_ext)) {
+										echo '</span></div>';
+										} else {
+										echo '&nbsp;ext:' . $user_ext . '</span></div>';
+										}
+									echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_email . '</span></div>';
+									echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_team . ' Sales: ' . $user_territory . '</span></div>';
+								echo '</div>';
+						}
+					// if no results
+					} else {
+						echo "No results found for '<span style=\"font-weight: bold;\">" . $name . "</span>' under '<span style=\"font-weight: bold;\">" . $searchArea . "</span>', please try again.";
+					}
+
+					echo '</div>';
+					echo "\n";
+				} 
+				else{ 
+					echo  ""; // could put the search form here to hide when form submitted
+				}
+			?>
+
+		</div>
+	</div>
+	
+</div>
 <!-- Map -->
-		<div id="mapwrap">
-			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:html="http://www.w3.org/1999/xhtml" x="0px" y="0px" viewBox="0 0 487 300" style="enable-background:new 0 0 487 300;" xml:space="preserve">
-
+	<div id="mapwrap" style="position: fixed; width: 100%; top: 0px; left: 0; text-align: center; z-index: -1;">
+		<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:html="http://www.w3.org/1999/xhtml" x="0px" y="0px" viewBox="0 0 487 300" style="enable-background:new 0 0 487 300;" xml:space="preserve">
 			<g id="map">
 				<g id="CT" name="CT" class="state">
 					<path d="M435.4,85.6l-0.1-0.2l-7.3,1.8l-5.5,1.3l1.4,8l0.7,0.6l-1.7,1.7l0.9,0.9l0.6-0.4l2.7-2.3l2.8-1.8l0.8-0.1
 						l0.4-0.5l0.8,0.1l0.6-0.4l1-0.3l0.7-0.6h0.7l1.6-0.9l0.4,0.2l0.1-1.2l-0.3-1L435.4,85.6L435.4,85.6z"/>
 					<text transform="matrix(1 0 0 1 426.8999 92.8)" class="text">CT</text>
 				</g>
-			</g>
-			<g id="map">
 				<g id="MA" name="MA" class="state">
 					<path d="M446.2,88.6l-0.5,0.2l-0.8,1.3l2.2-0.7L446.2,88.6L446.2,88.6z M440.5,74.6l-0.8,0.2l-2.4,2.7l-8.9,2l-6.1,1.4
 						l-0.1,7.3l0.4,0.2l5.5-1.3l7.3-1.8l0.1,0.2l3.2-1l0.2,1.2l0.6,1.1l1.1,0.6l0.4,0.2h0.7l0.4,1.5h0.5l0.9-0.7l-0.2-0.6l0.9-0.7l0.7-1
@@ -114,8 +168,6 @@
 						l-1.5,0.2l-0.6-0.2l0.1-1.2l0.8-1.1L441,78l1.3-1l-0.2-0.8l-0.6,0.5l-0.6-0.5L440.5,74.6L440.5,74.6z"/>
 					<text transform="matrix(1 0 0 1 427.5704 84.5333)" class="text">MA</text>
 				</g>
-			</g>
-			<g id="map">
 				<g id="RI" name="RI" class="state">
 					<path d="M442,89.2l-0.4-1.5h-0.7l0.5,1.9L442,89.2L442,89.2z M440.5,87.5l-1.1-0.6l-0.6-1.1l-0.2-1.2l-3.2,1l1.4,5
 						l0.3,1l-0.1,1.2l1.8-1.1l0.8-0.2l0.1-1.2l-0.4-1.1l0.2-1.8L440.5,87.5z"/>
@@ -123,8 +175,6 @@
 						C441.5,95.6,442.3,94.8,443.4,94.8z"/>
 					<text transform="matrix(1 0 0 1 446.5891 100.9858)" class="text">RI</text>
 				</g>
-			</g>
-			<g id="map">
 				<g id="NJ" name="NJ" class="state">
 					<path d="M415.4,112.3l-0.6,1.6l-1.3,0.7l-0.9,0.9l-0.3,1.4l0.3,1.9l1.7,1l0.9,0.3l1.1,0.8l0.9-0.4l1.3,0.4l-0.1,2.4
 						l0.7-0.3l0.8-1.3l0.3-1.8l0.5-0.8l0.4-1.3l0.7-2.1l0.8-0.8l0.4-1l-0.2-0.5l0.1-1.2l-0.2-1.9h0.3l-0.2-3.4l-0.6-0.9l-1.4,0.1
@@ -662,115 +712,8 @@
 					<text transform="matrix(1 0 0 1 66.4207 34.37)" class="text">WA</text>
 				</g>
 			</g>
-
-			</svg>
-
-<script src="jquery-3.3.1.min.js"></script>
-<script>
-$(document).ready(function(){
-$('#map g').click(function(){
-	var title = $(this).attr('mytitle');
-	
-	$('#map g').removeClass('selected'); //this will remove all selected classes inside the element map
-	$(this).addClass('selected'); //this line will add a class called "selected" when clicked
-
-//	$("#searchform").submit();
-
-$('#mapwrap').usmap({
-  // The click action
-  click: function(event, data) {
-  	var stateClicked = $(this).attr('name');
-	$('#clicked-state')
-		.text('You clicked: '+data.name)
-		.parent().effect('highlight', {color: '#C7F464'}, 2000);
-
-		$.ajax({url:"index.php?svgSearch", type:"POST", data:"name="+stateClicked, data:"searchArea=territory",
-
-		,success:function(data){
-		//get the result from the php file after it's executed on server
-		}
-
-		});
-
-  }
-});
-
-});
-
-});
-</script>
-
-		</div>
-
+		</svg>
 	</div>
-
-<!-- Search results -->
-	<div style="width: 39%; display: inline-block;" name="searchResults" id="searchResults">
-
-<!-- <a href="index.php?svgSearch=<?php echo $user_id; ?>"></a> -->
-<?php
-	if(isset($_GET['svgSearch'])) {
-		include("svgSearch.php");
-	}
-?>
-
-
-<?php
-// 	if(isset($_POST['search'])) {
-	if(isset($_GET['go'])) {
-		$name = $_POST['name'];
-		$searchArea = $_POST['searchArea'];
-		//-query  the database table
-		$sql = "SELECT * FROM salesteam WHERE " . $searchArea . " like '%" . $name . "%' ORDER BY lastName";
-		//echo $sql;
-		//-run  the query against the mysql query function
-		$result = mysqli_query($conn,$sql);
-
-		echo '<div id="gallery">';
-		if ($result != 0 && mysqli_num_rows($result)) {
-		// results
-		//-create  while loop and loop through result set 
-			while($row = mysqli_fetch_array($result)){ 
-				$user_id = $row['id'];
-				$user_firstName = $row['firstName'];
-				$user_lastName = $row['lastName'];
-				$user_phone = $row['phone'];
-				$user_ext = $row['ext'];
-				$user_email = $row['email'];
-				$user_slsid = $row['slsid'];
-				$user_territory = $row['territory'];
-				$user_team = $row['team'];
-				$user_image = $row['image'];
-				//-display the result of the array
-					echo '<div class="video">';
-						echo '<div align="center"><img src="images/' . $user_image . '" width="200" height="200" border="1" style="border: 1pt solid;" /></div>';
-						echo '<div align="center" style="padding-top: 5px;"><span class="nametext">' . $user_firstName . ' ' . $user_lastName . '</span></div>';
-						echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_phone . '&nbsp;';
-						if (empty($user_ext)) {
-							echo '</span></div>';
-							} else {
-							echo '&nbsp;ext:' . $user_ext . '</span></div>';
-							}
-						echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_email . '</span></div>';
-						echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_team . ' Sales: ' . $user_territory . '</span></div>';
-					echo '</div>';
-			}
-		// if no results
-		} else {
-			echo "No results found for '<span style=\"font-weight: bold;\">" . $name . "</span>' under '<span style=\"font-weight: bold;\">" . $searchArea . "</span>', please try again.";
-		}
-
-		echo '</div>';
-		echo "\n";
-	} 
-	else{ 
-	echo  "<p>Please enter a search query</p>"; 
-	}
-// 	}
-?>
-
-	</div>
-	
 </div>
 
 </body>
