@@ -47,9 +47,9 @@
 	.bodytext {
 		font-size: 9pt; line-height: 10pt; font-weight: bold; color: #000000; font-family: Verdana, Arial, Helvetica, sans-serif; margin: 0; padding: 0;
 	}
-	.state {fill: #e9e9e9; transition: .25s;}
+	.state {fill: #e1e1e1; transition: .25s;}
 	.state path { stroke: #f2f2f2; stroke-width: 0.5; stroke-linejoin: round;}
-	.text {fill: #ddd; font-family: 'Arial-BoldMT'; font-size: 4px;}
+	.text {fill: #f2f2f2; font-family: 'Arial-BoldMT'; font-size: 4px;}
 	
 /* 	.state:hover {fill: #bd1d49 !important; cursor: pointer; transition: .25s;} */
 	.selected {fill: #bd1d49; transition: .25s;}
@@ -58,6 +58,14 @@
 
 </head>
 <body>
+
+<?php
+	if(isset($_GET['go'])) {
+		$searchArea = $_POST['searchArea'];
+		$searchtext = $_POST['searchtext'];
+	}
+?>
+
 
 <div style="width: 99%; max-width: 99%; text-align: center;">
 	<div class="container-fluid" style="padding: 25px 0; z-index: 1000;">
@@ -76,13 +84,13 @@
 						<div class="col-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<select class="custom-select" name="searchArea" id="inputGroupSelect01">
-										<option value="searchTer">Territory</option>
-										<option value="firstName">First Name</option>
-										<option value="lastName">Last Name</option>
+									<select class="custom-select" name="searchArea" id="searchArea">
+										<option <?php if ($searchArea == "searchTer" ) {echo 'selected';} ?> value="searchTer">Territory</option>
+										<option <?php if ($searchArea == "firstName" ) {echo 'selected';} ?> value="firstName">First Name</option>
+										<option <?php if ($searchArea == "lastName" ) {echo 'selected';} ?> value="lastName">Last Name</option>
 									</select>
 								</div>
-								<input type="text" name="name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"">
+								<input type="text" name="searchtext" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"">
 								<div class="input-group-append">
 									<input type="submit" name="search" value="Search" class="btn btn-secondary" id="button-addon2">
 								</div>
@@ -98,11 +106,14 @@
 
 			<?php
 				if(isset($_GET['go'])) {
-					$name = $_POST['name'];
-					$searchArea = $_POST['searchArea'];
+					// check for admin
+					if ($searchtext == "admin") {
+						echo "<script>window.open('salesTeam.php', '_self')</script>";
+						}
+
 					//-query  the database table
-					$sql = "SELECT * FROM salesteam WHERE " . $searchArea . " like '%" . $name . "%' ORDER BY lastName";
-					//echo $sql;
+					$sql = "SELECT * FROM salesteam WHERE " . $searchArea . " like '%" . $searchtext . "%' ORDER BY lastName";
+
 					//-run  the query against the mysql query function
 					$result = mysqli_query($conn,$sql);
 
@@ -137,7 +148,7 @@
 						}
 					// if no results
 					} else {
-						echo "No results found for '<span style=\"font-weight: bold;\">" . $name . "</span>' under '<span style=\"font-weight: bold;\">" . $searchArea . "</span>', please try again.";
+						echo "No results found for '<span style=\"font-weight: bold;\">" . $searchtext . "</span>' under '<span style=\"font-weight: bold;\">" . $searchArea . "</span>', please try again.";
 					}
 
 					echo '</div>';
