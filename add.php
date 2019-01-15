@@ -125,13 +125,13 @@
 <?php
 	if(isset($_POST['sub'])) {
 	
-		$firstName = $_POST['firstName'];
-		$lastName = $_POST['lastName'];
+		$firstName = $_POST['firstName'] . " ";
+		$lastName = $_POST['lastName'] . " ";
 		$phone = $_POST['phone'];
 		$ext = $_POST['ext'];
 		$email = $_POST['email'];
 		$slsid = $_POST['slsid'];
-		$territory = $_POST['territory'];
+		$territory = $_POST['territory'] . " ";
 		$searchTer = $_POST['searchTer'];
 		$team = $_POST['team'];
 
