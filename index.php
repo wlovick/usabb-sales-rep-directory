@@ -112,7 +112,7 @@
 						}
 
 					//-query  the database table
-					$sql = "SELECT * FROM salesteam WHERE " . $searchArea . " like '%" . $searchtext . "%' ORDER BY lastName";
+					$sql = "SELECT * FROM salesteam WHERE " . $searchArea . " like '%" . $searchtext . " " . "%' ORDER BY lastName";
 
 					//-run  the query against the mysql query function
 					$result = mysqli_query($conn,$sql);

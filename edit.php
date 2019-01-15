@@ -126,7 +126,7 @@
 		<div class="row">
 			<div class="col">
 				<label for="u_searchTer">Search Terms (state abv &amp; spelled out)</label>
-				<input type="text" name="u_searchTer" placeholder="<?php echo $user_searchTer;?>" class="form-control"/>
+				<input type="text" name="u_searchTer" value="<?php echo $user_searchTer;?>" class="form-control"/>
 			</div>
 		</div>
 		
@@ -136,7 +136,7 @@
 				<input type="text" name="oldimage" id="oldimage" value="<?php echo $user_image;?>" class="form-control"/>
 			</div>
 			<div class="col">
-				<label for="u_editimage">Add Image:</label><br/>
+				<label for="u_editimage">Update Image:</label><br/>
 				<input type="file" name="u_editimage" id="u_editimage"/>
 			</div>
 		</div>
@@ -153,22 +153,27 @@
 <?php
 	if(isset($_POST['update'])) {
 
-		$update_firstName = $_POST['u_firstName'];
-		$update_lastName = $_POST['u_lastName'];
+		$update_firstName = $_POST['u_firstName'] . " ";
+		$update_lastName = $_POST['u_lastName'] . " ";
 		$update_phone = $_POST['u_phone'];
 		$update_ext = $_POST['u_ext'];
 		$update_email = $_POST['u_email'];
 		$update_slsid = $_POST['u_slsid'];
 		$update_territory = $_POST['u_territory'];
-		$update_searchTer = $_POST['u_searchTer'];
+		$update_searchTer = $_POST['u_searchTer'] . " ";
 		$update_team = $_POST['u_team'];
+		$new_image = basename($_FILES["u_editimage"]["name"]);
+		$keep_image = $_POST['oldimage'];
 
-		$update_image = basename($_FILES["u_editimage"]["name"]);
-
-		$edittarget_dir = "images/";
-		$edittarget_file = $edittarget_dir . $update_image;
-
-		$editimageUpload = move_uploaded_file($_FILES["u_editimage"]["tmp_name"], $edittarget_file);
+		if($new_image) {
+			$edittarget_dir = "images/";
+			$edittarget_file = $edittarget_dir . $new_image;
+			$editimageUpload = move_uploaded_file($_FILES["u_editimage"]["tmp_name"], $edittarget_file);
+			$update_image = $new_image;
+		}
+		else {
+			$update_image = $keep_image;
+		}
 
 
 		$update = "update salesteam set firstName='$update_firstName', lastName='$update_lastName', phone='$update_phone', ext='$update_ext', email='$update_email', slsid='$update_slsid', territory='$update_territory', searchTer='$update_searchTer', team='$update_team', image='$update_image' where id='$edit_id'";
