@@ -73,7 +73,12 @@
 <!-- Header Text -->
 			<div class="row">
 				 <div class="col-12">
-					<div style="font-size: 22pt; line-height: 24pt; font-weight: bold; color: #226ab3; font-family: Verdana, Arial, Helvetica, sans-serif;"><a href="index.php" style="text-decoration: none;">USABlueBook Sales Representatives Directory</a></div>
+					<div style="text-align: center; padding-bottom: 15px;"><a href="index.php" style="text-decoration: none;"><img src="images/USABlueBook_4c_wt.png" width="400" height="89" border="0" alt="" style="display: inline-block; margin: 0;" /></a></div>
+				</div>
+			</div>
+			<div class="row">
+				 <div class="col-12">
+					<div style="font-size: 22pt; line-height: 30pt; font-weight: bold; color: #226ab3; font-family: Verdana, Arial, Helvetica, sans-serif;"><a href="index.php" style="text-decoration: none;">Sales Representative Directory</a></div>
 				</div>
 			</div>
 <!-- Search bar -->
@@ -85,7 +90,8 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<select class="custom-select" name="searchArea" id="searchArea">
-										<option <?php if ($searchArea == "searchTer" ) {echo 'selected';} ?> value="searchTer">Territory</option>
+										<option <?php if ($searchArea == "zip" ) {echo 'selected';} ?> value="zip">Zip Code</option>
+										<option <?php if ($searchArea == "searchTer" ) {echo 'selected';} ?> value="searchTer">State</option>
 										<option <?php if ($searchArea == "firstName" ) {echo 'selected';} ?> value="firstName">First Name</option>
 										<option <?php if ($searchArea == "lastName" ) {echo 'selected';} ?> value="lastName">Last Name</option>
 									</select>
@@ -106,13 +112,24 @@
 
 			<?php
 				if(isset($_GET['go'])) {
-					// check for admin
-					if ($searchtext == "admin") {
-						echo "<script>window.open('salesTeam.php', '_self')</script>";
-						}
-
 					//-query  the database table
-					$sql = "SELECT * FROM salesteam WHERE " . $searchArea . " like '%" . $searchtext . " " . "%' ORDER BY lastName";
+					if ($searchtext == "all") { //search zipSLSid for rep then search salesteam
+						$sql = 'SELECT * FROM salesteam  ORDER BY lastName limit 0, 99';
+
+					} elseif ($searchtext == "admin") { // keyword to go to admin page
+						echo "<script>window.open('salesTeam.php', '_self')</script>";
+
+					} elseif ($searchArea == "zip") { // search zip_slsid for ids then search salesteam
+						$sql = 'SELECT * FROM salesteam WHERE slsid LIKE (SELECT slsid FROM zip_slsid WHERE zip LIKE "%' . $searchtext . '%") limit 0, 99';
+
+					} elseif ($searchArea == "searchTer") { // search by state
+						$sql = 'SELECT * FROM salesteam WHERE ' . $searchArea . ' like "% ' . $searchtext . ' %" ORDER BY lastName limit 0, 99';
+
+					} elseif ($searchArea == "firstName" || $searchArea == "lastName") { // search by first or last name
+						$sql = 'SELECT * FROM salesteam WHERE ' . $searchArea . ' like "%' . $searchtext . '%" ORDER BY lastName limit 0, 99';
+
+					} else { // show all
+					}
 
 					//-run  the query against the mysql query function
 					$result = mysqli_query($conn,$sql);
@@ -138,9 +155,9 @@
 									echo '<div align="center" style="padding-top: 5px;"><span class="nametext">' . $user_firstName . ' ' . $user_lastName . '</span></div>';
 									echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_phone . '&nbsp;';
 									if (empty($user_ext)) {
-										echo '</span></div>';
+											echo '</span></div>';
 										} else {
-										echo '&nbsp;ext:' . $user_ext . '</span></div>';
+											echo '&nbsp;ext:' . $user_ext . '</span></div>';
 										}
 									echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_email . '</span></div>';
 									echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_team . ' Sales: ' . $user_territory . '</span></div>';
@@ -155,7 +172,7 @@
 					echo "\n";
 				} 
 				else{ 
-					echo  ""; // could put the search form here to hide when form submitted
+					echo  ""; 
 				}
 			?>
 

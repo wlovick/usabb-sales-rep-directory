@@ -153,14 +153,14 @@
 <?php
 	if(isset($_POST['update'])) {
 
-		$update_firstName = $_POST['u_firstName'] . " ";
-		$update_lastName = $_POST['u_lastName'] . " ";
+		$update_firstName = $_POST['u_firstName'];
+		$update_lastName = $_POST['u_lastName'];
 		$update_phone = $_POST['u_phone'];
 		$update_ext = $_POST['u_ext'];
 		$update_email = $_POST['u_email'];
 		$update_slsid = $_POST['u_slsid'];
 		$update_territory = $_POST['u_territory'];
-		$update_searchTer = $_POST['u_searchTer'] . " ";
+		$update_searchTer = $_POST['u_searchTer'];
 		$update_team = $_POST['u_team'];
 		$new_image = basename($_FILES["u_editimage"]["name"]);
 		$keep_image = $_POST['oldimage'];
@@ -181,7 +181,7 @@
 		$update_run = mysqli_query($conn,$update);
 	
 		if($update_run) {
-	 		echo "<script>alert('Team member has been updated!')</script>";
+// 	 		echo "<script>alert('Team member has been updated!')</script>";
 			echo "<script>window.open('salesTeam.php', '_self')</script>";
 		}
 	}
