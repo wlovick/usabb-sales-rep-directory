@@ -14,7 +14,7 @@
 <style type="text/css">
 .addBox {
         width: 700px;
-        height: 700px;
+        height: 800px;
         background-color: #e9f1f7;
         border-radius: 15px;
         box-shadow: 5px 5px 15px grey;
@@ -107,6 +107,13 @@
 		
 		<div class="row">
 			<div class="col">
+				<label for="bio">Biography:</label>
+				<input type="text" name="user_bio" value="<?php echo $bio;?>" class="form-control"/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col">
 				<label for="image">Add Image:</label><br/>
 				<input type="file" name="image" id="image"/>
 			</div>
@@ -133,6 +140,7 @@
 		$slsid = $_POST['slsid'];
 		$territory = $_POST['territory'];
 		$searchTer = $_POST['searchTer'];
+		$bio = $_POST['bio'];
 		$team = $_POST['team'];
 
 		$addtarget_dir = "images/";
@@ -142,7 +150,7 @@
 
 		move_uploaded_file($_FILES["image"]["tmp_name"], $addtarget_file);
 		
-		$insert = "insert into salesteam (firstName, lastName, phone, ext, email, slsid, territory, searchTer, team, image) values ('$firstName', '$lastName', '$phone', '$ext', '$email', '$slsid', '$territory', '$searchTer', '$team', '$image')";
+		$insert = "insert into salesteam (firstName, lastName, phone, ext, email, slsid, territory, searchTer, bio, team, image) values ('$firstName', '$lastName', '$phone', '$ext', '$email', '$slsid', '$territory', '$searchTer', '$bio', '$team', '$image')";
 
 		$run = mysqli_query($conn,$insert);
 		

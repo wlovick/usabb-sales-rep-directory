@@ -108,78 +108,85 @@
 			</div>
 
 <!-- Search results -->
-		<div style="display: inline-block;" name="searchResults" id="searchResults">
-
-			<?php
-				if(isset($_GET['go'])) {
-					//-query  the database table
-					if ($searchtext == "all") { //search zipSLSid for rep then search salesteam
-						$sql = 'SELECT * FROM salesteam  ORDER BY lastName limit 0, 99';
-
-					} elseif ($searchtext == "admin") { // keyword to go to admin page
-						echo "<script>window.open('salesTeam.php', '_self')</script>";
-
-					} elseif ($searchArea == "zip") { // search zip_slsid for ids then search salesteam
-						$sql = 'SELECT * FROM salesteam WHERE slsid LIKE (SELECT slsid FROM zip_slsid WHERE zip LIKE "%' . $searchtext . '%") limit 0, 99';
-
-					} elseif ($searchArea == "searchTer") { // search by state
-						$sql = 'SELECT * FROM salesteam WHERE ' . $searchArea . ' like "% ' . $searchtext . ' %" ORDER BY lastName limit 0, 99';
-
-					} elseif ($searchArea == "firstName" || $searchArea == "lastName") { // search by first or last name
-						$sql = 'SELECT * FROM salesteam WHERE ' . $searchArea . ' like "%' . $searchtext . '%" ORDER BY lastName limit 0, 99';
-
-					} else { // show all
-					}
-
-					//-run  the query against the mysql query function
-					$result = mysqli_query($conn,$sql);
-
-					echo '<div id="gallery">';
-					if ($result != 0 && mysqli_num_rows($result)) {
-					// results
-					//-create  while loop and loop through result set 
-						while($row = mysqli_fetch_array($result)){ 
-							$user_id = $row['id'];
-							$user_firstName = $row['firstName'];
-							$user_lastName = $row['lastName'];
-							$user_phone = $row['phone'];
-							$user_ext = $row['ext'];
-							$user_email = $row['email'];
-							$user_slsid = $row['slsid'];
-							$user_territory = $row['territory'];
-							$user_team = $row['team'];
-							$user_image = $row['image'];
-							//-display the result of the array
-								echo '<div class="video">';
-									echo '<div align="center" style="width: 200px; height: 200px;"><img src="images/' . $user_image . '" width="auto" height="200" border="1" style="border: 1pt solid;" /></div>';
-									echo '<div align="center" style="padding-top: 5px;"><span class="nametext">' . $user_firstName . ' ' . $user_lastName . '</span></div>';
-									echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_phone . '&nbsp;';
-									if (empty($user_ext)) {
-											echo '</span></div>';
-										} else {
-											echo '&nbsp;ext:' . $user_ext . '</span></div>';
-										}
-									echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_email . '</span></div>';
-									echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_team . ' Sales: ' . $user_territory . '</span></div>';
-								echo '</div>';
+			<div style="display: inline-block;" name="searchResults" id="searchResults">
+				<div style="padding-top: 15px; margin-left: auto; margin-right: auto;">
+					<?php
+						if(isset($_GET['info'])) {
+							include("info.php");
 						}
-					// if no results
-					} else {
-						echo "No results found for '<span style=\"font-weight: bold;\">" . $searchtext . "</span>' under '<span style=\"font-weight: bold;\">" . $searchArea . "</span>', please try again.";
+					?>
+				</div>
+
+				<?php
+					if(isset($_GET['go'])) {
+						//-query  the database table
+						if ($searchtext == "all") { //search zipSLSid for rep then search salesteam
+							$sql = 'SELECT * FROM salesteam  ORDER BY lastName limit 0, 99';
+
+						} elseif ($searchtext == "nimda") { // keyword to go to admin page
+							echo "<script>window.open('salesTeam.php', '_self')</script>";
+
+						} elseif ($searchArea == "zip") { // search zip_slsid for ids then search salesteam
+							$sql = 'SELECT * FROM salesteam WHERE slsid LIKE (SELECT slsid FROM zip_slsid WHERE zip LIKE "%' . $searchtext . '%") limit 0, 99';
+
+						} elseif ($searchArea == "searchTer") { // search by state
+							$sql = 'SELECT * FROM salesteam WHERE ' . $searchArea . ' like "% ' . $searchtext . ' %" ORDER BY lastName limit 0, 99';
+
+						} elseif ($searchArea == "firstName" || $searchArea == "lastName") { // search by first or last name
+							$sql = 'SELECT * FROM salesteam WHERE ' . $searchArea . ' like "%' . $searchtext . '%" ORDER BY lastName limit 0, 99';
+
+						} else { // show all
+						}
+
+						//-run  the query against the mysql query function
+						$result = mysqli_query($conn,$sql);
+
+						echo '<div id="gallery">';
+						if ($result != 0 && mysqli_num_rows($result)) {
+						// results
+						//-create  while loop and loop through result set 
+							while($row = mysqli_fetch_array($result)){ 
+								$user_id = $row['id'];
+								$user_firstName = $row['firstName'];
+								$user_lastName = $row['lastName'];
+								$user_phone = $row['phone'];
+								$user_ext = $row['ext'];
+								$user_email = $row['email'];
+								$user_slsid = $row['slsid'];
+								$user_territory = $row['territory'];
+								$user_team = $row['team'];
+								$user_image = $row['image'];
+								//-display the result of the array
+									echo '<div class="video">';
+										echo '<div align="center" style="width: 200px; height: 200px;"><a href="index.php?info=' . $user_id . '"><img src="images/' . $user_image . '" width="auto" height="200" border="1" style="border: 1pt solid;" /></a></div>';
+										echo '<div align="center" style="padding-top: 5px;"><span class="nametext">' . $user_firstName . ' ' . $user_lastName . '</span></div>';
+// 										echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_phone . '&nbsp;';
+// 										if (empty($user_ext)) {
+// 												echo '</span></div>';
+// 											} else {
+// 												echo '&nbsp;ext:' . $user_ext . '</span></div>';
+// 											}
+// 										echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_email . '</span></div>';
+// 										echo '<div align="center" style="padding-top: 0px;"><span class="bodytext">' . $user_team . ' Sales: ' . $user_territory . '</span></div>';
+									echo '</div>';
+							}
+						// if no results
+						} else {
+							echo "No results found for '<span style=\"font-weight: bold;\">" . $searchtext . "</span>' under '<span style=\"font-weight: bold;\">" . $searchArea . "</span>', please try again.";
+						}
+
+						echo '</div>';
+						echo "\n";
+					} 
+					else{ 
+						echo  ""; 
 					}
+				?>
 
-					echo '</div>';
-					echo "\n";
-				} 
-				else{ 
-					echo  ""; 
-				}
-			?>
-
+			</div>
 		</div>
-	</div>
 	
-</div>
+	</div>
 <!-- Map -->
 	<div id="mapwrap" style="position: fixed; width: 100%; top: 0px; left: 0; text-align: center; z-index: -1;">
 		<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:html="http://www.w3.org/1999/xhtml" x="0px" y="0px" viewBox="0 0 487 300" style="enable-background:new 0 0 487 300;" xml:space="preserve">

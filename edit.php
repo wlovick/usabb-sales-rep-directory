@@ -15,7 +15,7 @@
 <style type="text/css">
 .editBox {
         width: 700px;
-        height: 700px;
+        height: 800px;
         background-color: #e9f1f7;
         border-radius: 15px;
         box-shadow: 5px 5px 15px grey;
@@ -65,6 +65,7 @@
 		$user_searchTer = $row['searchTer'];
 		$user_team = $row['team'];
 		$user_image = $row['image'];
+		$user_bio = $row['bio'];
 	}
 ?>
 
@@ -125,8 +126,15 @@
 		
 		<div class="row">
 			<div class="col">
-				<label for="u_searchTer">Search Terms (state abv &amp; spelled out)</label>
+				<label for="u_searchTer">Search Terms (state abv &amp; spelled out):</label>
 				<input type="text" name="u_searchTer" value="<?php echo $user_searchTer;?>" class="form-control"/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col">
+				<label for="user_bio">Biography:</label>
+				<input type="text" name="user_bio" value="<?php echo $user_bio;?>" class="form-control"/>
 			</div>
 		</div>
 		
@@ -161,6 +169,7 @@
 		$update_slsid = $_POST['u_slsid'];
 		$update_territory = $_POST['u_territory'];
 		$update_searchTer = $_POST['u_searchTer'];
+		$update_bio = $_POST['user_bio'];
 		$update_team = $_POST['u_team'];
 		$new_image = basename($_FILES["u_editimage"]["name"]);
 		$keep_image = $_POST['oldimage'];
@@ -176,7 +185,7 @@
 		}
 
 
-		$update = "update salesteam set firstName='$update_firstName', lastName='$update_lastName', phone='$update_phone', ext='$update_ext', email='$update_email', slsid='$update_slsid', territory='$update_territory', searchTer='$update_searchTer', team='$update_team', image='$update_image' where id='$edit_id'";
+		$update = "update salesteam set firstName='$update_firstName', lastName='$update_lastName', phone='$update_phone', ext='$update_ext', email='$update_email', slsid='$update_slsid', territory='$update_territory', searchTer='$update_searchTer', bio='$update_bio', team='$update_team', image='$update_image' where id='$edit_id'";
 
 		$update_run = mysqli_query($conn,$update);
 	
