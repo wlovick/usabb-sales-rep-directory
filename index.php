@@ -23,7 +23,7 @@
 		padding: 0px;
 		text-align: center;
 		width: 100%;
-		font-family: "Myriad Pro","Helvetica Neue",Helvetica,Arial,Sans-Serif;
+		font-family: Helvetica, Arial, Sans-Serif;
 		background-color: #F2F2F2;
 	}
 	
@@ -78,7 +78,7 @@
 			</div>
 			<div class="row">
 				 <div class="col-12">
-					<div style="font-size: 22pt; line-height: 30pt; font-weight: bold; color: #226ab3; font-family: Verdana, Arial, Helvetica, sans-serif;"><a href="index.php" style="text-decoration: none;">Sales Representative Directory</a></div>
+					<div style="font-size: 28pt; line-height: 30pt; font-weight: bold; color: #226ab3; font-family: Verdana, Arial, Helvetica, sans-serif;"><a href="index.php" style="text-decoration: none;">Sales Representative Directory</a></div>
 				</div>
 			</div>
 <!-- Search bar -->
